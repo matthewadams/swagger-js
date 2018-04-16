@@ -212,4 +212,20 @@ describe('http', () => {
         done(err)
       })
   })
+
+  it('should err gracefully when requesting https from an http server', (done) => {
+    Swagger({
+      url: 'http://localhost:8000/petstore.json',
+      requestInterceptor: (req) => {
+        const u = url.parse(req.url)
+        u.protocol = 'https'
+        req.url = u.toString()
+        return req
+      }
+    })
+      .catch((err) => {
+        // TODO: determine what the error should be & assert _that_
+        done(err)
+      })
+  })
 })
